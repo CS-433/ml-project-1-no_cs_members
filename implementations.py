@@ -94,6 +94,6 @@ def ridge_regression(y, tx, lambda_):
     n = tx.shape[0]
     d = tx.shape[1]
     w = np.linalg.solve(np.dot(tx.T,tx) + lambda_*2*n * np.identity(d), np.dot(tx.T,y))
-    loss = compute_loss(y,tx,w)
+    loss = compute_loss(y,tx,w) #utiliser RMSE ou MSE?? et que veut dire : loss shouldn't include penalty term ???
     
     return w, loss
