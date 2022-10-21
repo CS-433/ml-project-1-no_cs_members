@@ -16,6 +16,14 @@ git push 				# push committed changes to repo
 
 git pull 				# pull a branch to local repo
 
+git revert dd61ab32			# revert a particular commit with id "dd61ab32"
+
+git revert HEAD~1 -m 1			# revert last commit
+
+git branch -d localBranchName			// delete branch locally
+
+git push origin --delete remoteBranchName	// delete branch remotely on repo
+
 
 
 
