@@ -154,7 +154,7 @@ def compute_mse_loss(y, tx, w):
     Returns:
         the value of the loss (a scalar), corresponding to the input parameters w.
     """
-    return (1/2*len(y)) * np.sum((y - tx @ w)**2)
+    return (1/2*len(y)) * np.sum((y - tx.dot(w))**2)
 
 def compute_mse_gradient(y, tx, w):
     """Computes the gradient at w.
@@ -167,7 +167,7 @@ def compute_mse_gradient(y, tx, w):
     Returns:
         An numpy array of shape (2, ) (same shape as w), containing the gradient of the loss at w.
     """
-    return -(1/len(y)) * tx.T @ (y - tx @ w)
+    return -(1/len(y)) * tx.T.dot(y - tx @ w)
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
