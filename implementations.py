@@ -154,7 +154,7 @@ def compute_mse_loss(y, tx, w):
     Returns:
         the value of the loss (a scalar), corresponding to the input parameters w.
     """
-    return (1/len(y)) * np.sum((y - tx @ w.T)**2)
+    return (1/2*len(y)) * np.sum((y - tx @ w)**2)
 
 def compute_mse_gradient(y, tx, w):
     """Computes the gradient at w.
