@@ -24,6 +24,8 @@ git branch -d localBranchName			// delete branch locally
 
 git push origin --delete remoteBranchName	// delete branch remotely on repo
 
+git push --set-upstream origin new-branch-name   # push new branch (local) to repo
+
 
 
 
