@@ -8,15 +8,14 @@ git branch new-branch-name 		# to create new branch
 
 git commit -m "message" 		# to commit 
 
-git add . 				# to add all changes to stack
+git add . 				# to add all changes to stack (ie "stash changes")
 
-git add filename 			# to add only "filename"'s changes to stack
+git add filename 			# stash only changes in "filename"  
 
 git push 				# push committed changes to repo
 
 git pull 				# pull a branch to local repo
 
+git log					# check history of commits in branch
 
-
-
-
+git checkout other-branch		# move from current branch to other-branch
