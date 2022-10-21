@@ -23,7 +23,7 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """
     w = initial_w
     for n_iter in range(max_iters):
-        w -= gamma * compute_mse_gradient(y,tx,w)
+        w = w- gamma * compute_mse_gradient(y,tx,w)
     
     return w, compute_mse_loss(y,tx,w)
 
@@ -46,7 +46,7 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
     """
     w = initial_w
     for n_iter in range(max_iters):
-        w -= gamma * compute_stoch_mse_gradient(y,tx,w)
+        w = w- gamma * compute_stoch_mse_gradient(y,tx,w)
 
     return w, compute_mse_loss(y,tx,w)
 
@@ -154,7 +154,7 @@ def compute_mse_loss(y, tx, w):
     Returns:
         the value of the loss (a scalar), corresponding to the input parameters w.
     """
-    return (1/2*len(y)) * np.sum((y - tx.dot(w))**2)
+    return (1/(2*len(y))) * np.sum(np.square(y - tx.dot(w)))
 
 def compute_mse_gradient(y, tx, w):
     """Computes the gradient at w.
