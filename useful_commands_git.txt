@@ -1,0 +1,22 @@
+git merge -m "msg" -X theirs other-branch  # merge with priority towards other or you
+
+git merge -m "msg" -X yours other-branch  # merge with priority towards you
+
+git status 				# to see stack and what is ready for commit
+
+git branch new-branch-name 		# to create new branch 
+
+git commit -m "message" 		# to commit 
+
+git add . 				# to add all changes to stack
+
+git add filename 			# to add only "filename"'s changes to stack
+
+git push 				# push committed changes to repo
+
+git pull 				# pull a branch to local repo
+
+
+
+
+
