@@ -1,5 +1,6 @@
 ## ***************************************************
 #  IMPLEMENTATIONS OF REQUIRED FUNCTIONS
+# this ver passed all tests
 
 ## ***************************************************
 
@@ -23,7 +24,7 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """
     w = initial_w
     for n_iter in range(max_iters):
-        w = w - gamma * compute_mse_gradient(y,tx,w)
+        w -= gamma * compute_mse_gradient(y,tx,w)
     
     return w, compute_mse_loss(y,tx,w)
 
@@ -46,7 +47,7 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
     """
     w = initial_w
     for n_iter in range(max_iters):
-        w = w - gamma * compute_stoch_mse_gradient(y,tx,w)
+        w -= gamma * compute_stoch_mse_gradient(y,tx,w)
 
     return w, compute_mse_loss(y,tx,w)
 
@@ -108,7 +109,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """
     w = initial_w
     for n_iter in range(max_iters):
-        w = w - gamma * calculate_logistic_gradient(y,tx,w)
+        w -= gamma * calculate_logistic_gradient(y,tx,w)
     loss = calculate_logistic_loss(y,tx,w)
     return w, loss
 
@@ -132,7 +133,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     w = initial_w
     for n_iter in range(max_iters):
         penalized_gradient = calculate_logistic_gradient(y,tx,w)+ 2 * lambda_ * w
-        w = w - gamma * penalized_gradient
+        w -= gamma * penalized_gradient
     loss = calculate_logistic_loss(y,tx,w) 
     # convention: loss is always without the penalty term
     return w, loss
@@ -154,7 +155,7 @@ def compute_mse_loss(y, tx, w):
     Returns:
         the value of the loss (a scalar), corresponding to the input parameters w.
     """
-    return (1/len(y)) * np.sum((y - tx @ w.T)**2)
+    return (1/(2*len(y))) * np.sum((y - tx@w)**2)
 
 def compute_mse_gradient(y, tx, w):
     """Computes the gradient at w.
@@ -167,7 +168,7 @@ def compute_mse_gradient(y, tx, w):
     Returns:
         An numpy array of shape (2, ) (same shape as w), containing the gradient of the loss at w.
     """
-    return -(1/len(y)) * tx.T @ (y - tx @ w.T)
+    return - (tx.T@(y - tx@w))/len(y)
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
