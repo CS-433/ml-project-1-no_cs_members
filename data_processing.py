@@ -1,5 +1,4 @@
 import numpy as np
-from helpers import *
 
 
 def standardize_data_999removed(y,tx):
