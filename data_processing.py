@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def standardize_data_999removed(y,tx):
+def standardize_data_removed(y,tx):
     """remove all points (rows) with missing data
     
     Args:
@@ -10,24 +10,26 @@ def standardize_data_999removed(y,tx):
     
     Returns:
         y_new: reduced y
-        tx_new: reduced x
-        means: array of the mean of each feature 
-        std_dev: array of the standard deviation of each feature
+        tx_new: reduced and standardized x
     """
     idx_incomplete_points = np.nonzero(tx[:,4]==-999)
-    tx_new = np.delete(tx,idx_incomplete_points,0)
+
+    tx_rem = np.delete(tx,idx_incomplete_points,0)
     y_new = np.delete(y,idx_incomplete_points)
-    means = np.mean(tx_new, axis=0)
-    means = means * np.ones(np.shape(tx_new))
-    tx_new_std = tx_new - means
-    std_dev = np.std(tx_new, axis=0)
-    std_dev = std_dev * np.ones(np.shape(tx_new))
-    tx_new_std = tx_new_std / std_dev      
     y_new = np.reshape(y_new,[len(y_new),1])
-    return y_new, tx_new, means, std_dev
+
+    means = np.mean(tx_rem, axis=0) * np.ones(np.shape(tx_rem))
+    tx_new = tx_rem - means
+
+    std_dev = np.std(tx_rem, axis=0) * np.ones(np.shape(tx_rem))
+    tx_new = tx_new / std_dev      
+
+    return y_new, tx_new
 
 
-def standardize_data_999mean(tx):
+
+
+def standardize_data_mean(tx):
     """replace missing data in tx in a feature (column) by the mean of the 
         feature across dataset
     
@@ -35,24 +37,22 @@ def standardize_data_999mean(tx):
         tx: shape=(N,P) N is the number of samples, D is the number of features
     
     Returns:
-        tx: modified tx with missing data replaced by means
-        means: array of the mean of each feature 
-        std_dev: array of the standard deviation of each feature
+        tx: modified tx then standardized
     """
 
     idx_incomplete_points = np.nonzero(tx[:,4]==-999)
     tx_rem = np.delete(tx,idx_incomplete_points,0)
     
     means = np.mean(tx_rem, axis=0)
-    std_dev = np.std(tx_rem - means, axis=0)
+    std_dev = np.std(tx_rem, axis=0)
 
     for i in range(tx.shape[1]):
         feature = tx[:,i]
-        feature[feature==-999] = means[i]
+        feature[feature==-999] = means[i] 
         tx[:,i] = feature
     
-    tx = (tx - means) / std_dev
-    return tx, means, std_dev
+    tx = (tx - means*np.ones(np.shape(tx))) / std_dev
+    return tx
 
 
 def split_data(y,tx,ratio):
