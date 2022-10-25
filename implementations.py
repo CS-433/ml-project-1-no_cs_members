@@ -1,9 +1,10 @@
-## ***************************************************
+## ******************************************************************************************************
 #  IMPLEMENTATIONS OF REQUIRED FUNCTIONS
 
-## ***************************************************
+## ******************************************************************************************************
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
@@ -108,7 +109,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """
     w = initial_w
     for n_iter in range(max_iters):
-        w -= gamma * calculate_logistic_gradient(y,tx,w)
+        w = w-gamma * calculate_logistic_gradient(y,tx,w)
     loss = calculate_logistic_loss(y,tx,w)
     return w, loss
 
@@ -138,10 +139,10 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     return w, loss
 
 
-## ***************************************************
+## ******************************************************************************************************
 #  auxiliary functions 
 
-## ***************************************************
+## ******************************************************************************************************
 
 def compute_mse_loss(y, tx, w):
     """Calculate the loss using either MSE.
@@ -154,7 +155,8 @@ def compute_mse_loss(y, tx, w):
     Returns:
         the value of the loss (a scalar), corresponding to the input parameters w.
     """
-    return (1/(2*len(y))) * np.sum((y - tx@w)**2)
+    return (1/(2*len(y))) * np.sum(np.square(y - tx@w))
+
 
 def compute_mse_gradient(y, tx, w):
     """Computes the gradient at w.
@@ -168,6 +170,7 @@ def compute_mse_gradient(y, tx, w):
         An numpy array of shape (2, ) (same shape as w), containing the gradient of the loss at w.
     """
     return - (tx.T@(y - tx@w))/len(y)
+
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
@@ -212,6 +215,7 @@ def compute_stoch_mse_gradient(y, tx, w):
     
     return grad
 
+
 def sigmoid(t):
     """apply sigmoid function on t.
 
@@ -222,6 +226,7 @@ def sigmoid(t):
         scalar or numpy array
     """
     return 1/(1+np.exp(-t))
+
 
 def calculate_logistic_loss(y, tx, w):
     """compute the cost by negative log likelihood.
@@ -241,6 +246,7 @@ def calculate_logistic_loss(y, tx, w):
     loss = np.sum(loss)  # to avoid nested 1-D arrays
     return loss
 
+
 def calculate_logistic_gradient(y, tx, w):
     """compute the gradient of loss.
     
@@ -253,3 +259,48 @@ def calculate_logistic_gradient(y, tx, w):
         a vector of shape (D, 1)
     """
     return (1/len(y))*tx.T@(sigmoid(tx@w)-y)
+
+
+def calculate_stoch_logistic_gradient(y, tx, w):
+    """Compute a stochastic gradient at w from just few examples n and their corresponding y_n labels.
+        
+    Args:
+        y: numpy array of shape=(N, )
+        tx: numpy array of shape=(N,2)
+        w: numpy array of shape=(2, ). The vector of model parameters.
+        
+    Returns:
+        A numpy array of shape (2, ) (same shape as w), containing the stochastic gradient of the loss at w.
+    """
+    batch_size=1
+    for value in batch_iter(y, tx, batch_size, num_batches=1, shuffle=True): 
+        grad = calculate_logistic_gradient(value[0],value[1],w)
+    
+    return grad
+
+
+def stoch_reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
+    """Logistic Ridge regression using stochastic gradient descent (y=0,1)
+
+    Args:
+        y: shape=(N, ) N is the number of samples
+        tx: shape=(N,P) D is the number of features
+        initial_w: shape=(P, ). The vector of model parameters.
+        max_iters: scalar
+        gamma: scalar. Step-size in gradient-descent
+
+    Returns:
+        w: optimal weights, numpy array of shape(D,), D is the number of features.
+        mse: scalar.
+    """
+
+    w = initial_w
+    for n_iter in range(max_iters):
+        penalized_gradient = calculate_stoch_logistic_gradient(y,tx,w)+ 2 * lambda_ * w
+        w -= gamma * penalized_gradient
+    loss = calculate_logistic_loss(y,tx,w) 
+    # convention: loss is always without the penalty term
+    return w, loss
+
+
+
