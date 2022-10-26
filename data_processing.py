@@ -81,5 +81,5 @@ def split_data(y,tx,ratio):
     return y_tr, x_tr, y_te, x_te
 
 def add_w0(tx,N):
-    tx = np.concatenate((tx,np.ones([N,1])),axis=1)  
+    tx = np.concatenate((np.ones([N,1]),tx),axis=1)  
     return tx
