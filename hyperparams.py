@@ -5,24 +5,6 @@ from implementations import *
 
 #Hyperparameters optimization
 
-def build_poly(x, degree):
-    """polynomial basis functions for input data x, for j=0 up to j=degree.
-    Args:
-        x: numpy array of shape (N,), N is the number of samples.
-        degree: integer.
-        
-    Returns:
-        poly: numpy array of shape (N,d+1)
-        
-    >>> build_poly(np.array([0.0, 1.5]), 2)
-    array([[1.  , 0.  , 0.  ],
-           [1.  , 1.5 , 2.25]])
-    """
-    poly = np.ones((len(x), 1))
-    for deg in range(1, degree+1):
-        poly = np.c_[poly, np.power(x, deg)]
-    return poly
-    
 
 def cross_validation_visualization(lambds, rmse_tr, rmse_te):
     """visualization the curves of rmse_tr and rmse_te."""
@@ -137,6 +119,29 @@ def cross_validation_demo(y, x, k_fold,k, initial_w, lambdas, degree ,gamma, max
 
 #Use poly and find best degree
 
+def build_poly(x, degree):
+    """polynomial basis functions for input data x, for j=0 up to j=degree.
+    Args:
+        x: numpy array of shape (N,), N is the number of samples.
+        degree: integer.
+        
+    Returns:
+        poly: numpy array of shape (N,d+1)
+        
+    >>> build_poly(np.array([0.0, 1.5]), 2)
+    array([[1.  , 0.  , 0.  ],
+           [1.  , 1.5 , 2.25]])
+    """
+    N = x.shape[0]
+    poly = x
+    poly = np.reshape(poly, [N,1])
+    if degree == 1 : 
+        return poly
+    else : 
+        for deg in range(2, degree+1):
+            poly = np.c_[poly, np.power(x, deg)]
+        return poly
+
 def best_degree_selection(y,x,degrees, k_fold, initial_w, lambdas, gamma,max_iters,seed = 1):
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
@@ -145,9 +150,11 @@ def best_degree_selection(y,x,degrees, k_fold, initial_w, lambdas, gamma,max_ite
     best_lambdas = []
     best_rmses = []
     #vary degree
+   
     for degree in degrees:
         # cross validation
         phi = build_poly(x,degree)
+    
         
         rmse_te = []
         for lambda_ in lambdas:
@@ -157,6 +164,9 @@ def best_degree_selection(y,x,degrees, k_fold, initial_w, lambdas, gamma,max_ite
                 
                 _, loss_te= cross_validation(y, phi, k_indices,k, initial_w,lambda_, degree ,gamma, max_iters)
                 rmse_te_tmp.append(loss_te)
+        
+                
+                
             rmse_te.append(np.mean(rmse_te_tmp))
         
         ind_lambda_opt = np.argmin(rmse_te)
@@ -166,6 +176,20 @@ def best_degree_selection(y,x,degrees, k_fold, initial_w, lambdas, gamma,max_ite
     ind_best_degree =  np.argmin(best_rmses)      
         
     return degrees[ind_best_degree]
+
+def phi_optimized(y,x,degrees,P, k_fold, initial_w, lambdas, gamma,max_iters,seed = 1) : 
+    #Calcul du meilleur degré pour chaque colonne
+    degrees_table = []
+    gamma = 0.4
+    nb_data_used = x.shape[0]
+    phi = np.ones([nb_data_used,1]) 
+    for column in range (P) : #ne prend pas en compte la première colonne de x, qui est la colonne de 1 VERIFIER QU'ON VA BIEN JUSQU4A LA DERNIERE
+        
+        degrees_table.append(best_degree_selection(y,x[:,column],degrees, k_fold, initial_w, lambdas, gamma,max_iters,seed = 1))
+        poly_x = build_poly(x[:,column], degrees_table[column])
+        phi = np.c_[ phi, poly_x ]
+
+    return phi, degrees_table
 
 
 # Voir a quoi peuvent servir les premières fonctions codées ?? initial_w ?
