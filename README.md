@@ -43,7 +43,11 @@ This file contains functions used to pre-process data.
 
 ### `hyperparams.py`
 
-* *build_k_indices, cross_validation, cross_validation_demo, build_poly, best_degree_selection, phi_optimized*
+This file contains functions to optimize the hyperparameter lambda.
+* *build_k_indices, cross_validation, cross_validation_demo*
+
+And to calculate the best degree for the polynomial expansion of each feature, and build the corresponding polynom.
+* *build_poly, best_degree_selection, phi_optimized*
 
 --- 
 
@@ -64,6 +68,14 @@ A notebook outlining the step-by-step progress of the model (each stage adds som
 3. logistic regression + normalized + w0
 4. logistic regression + normalized smart + w0
 5. logistic regression + normalized smart + w0 + polynomial expansion w/ Ridge regression
+
+### `seven_methods.py`
+
+This file allows to calculate the accuracy for seven methods of regression and classification coded for this project.
+
+### `boxplotloop.py`
+
+This file allows to calculate the accuracy for each method on random train sets, in order to build their box plot.
 
 ## Authors 
 
