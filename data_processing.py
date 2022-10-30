@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def standardize_data_removed(y,tx):
+def data_removed(y,tx):
     """remove all points (rows) with missing data
     
     Args:
@@ -10,19 +10,15 @@ def standardize_data_removed(y,tx):
     
     Returns:
         y_new: reduced y
-        tx_new: reduced and standardized x
+        tx_new: reduced x
     """
     idx_incomplete_points = np.nonzero(tx[:,4]==-999)
-
-    tx_rem = np.delete(tx,idx_incomplete_points,0)
+    tx_new = np.delete(tx,idx_incomplete_points,0)
+    y_new = np.delete(y,idx_incomplete_points)
+    idx_incomplete_points = np.nonzero(tx_new[:,0]==-999)
+    tx_new = np.delete(tx_new,idx_incomplete_points,0)
     y_new = np.delete(y,idx_incomplete_points)
     y_new = np.reshape(y_new,[len(y_new),1])
-
-    means = np.mean(tx_rem, axis=0) * np.ones(np.shape(tx_rem))
-    tx_new = tx_rem - means
-
-    std_dev = np.std(tx_rem, axis=0) * np.ones(np.shape(tx_rem))
-    tx_new = tx_new / std_dev      
 
     return y_new, tx_new
 

@@ -69,8 +69,6 @@ def cross_validation(y, x, k_indices, k,initial_w, lambda_, degree ,gamma, max_i
     
     return loss_tr, loss_te
 
-
-
 def cross_validation_demo(y, x, k_fold,k, initial_w, lambdas, degree ,gamma, max_iters):
     """cross validation over regularisation parameter lambda.
     
@@ -177,17 +175,19 @@ def best_degree_selection(y,x,degrees, k_fold, initial_w, lambdas, gamma,max_ite
         
     return degrees[ind_best_degree]
 
-def phi_optimized(y,x,degrees,P, k_fold, initial_w, lambdas, gamma,max_iters,seed = 1) : 
+def phi_optimized(y,x,degrees,P, k_fold, initial_w, lambdas, gamma,max_iters,columns_to_expand,seed = 1) : 
     #Calcul du meilleur degré pour chaque colonne
     degrees_table = []
     gamma = 0.4
     nb_data_used = x.shape[0]
     phi = np.ones([nb_data_used,1]) 
-    for column in range (P) : #ne prend pas en compte la première colonne de x, qui est la colonne de 1 VERIFIER QU'ON VA BIEN JUSQU4A LA DERNIERE
+    i = 0
+    for column in columns_to_expand : #ne prend pas en compte la première colonne de x, qui est la colonne de 1 VERIFIER QU'ON VA BIEN JUSQU4A LA DERNIERE
         
         degrees_table.append(best_degree_selection(y,x[:,column],degrees, k_fold, initial_w, lambdas, gamma,max_iters,seed = 1))
-        poly_x = build_poly(x[:,column], degrees_table[column])
+        poly_x = build_poly(x[:,column], degrees_table[i])
         phi = np.c_[ phi, poly_x ]
+        i=i+1
 
     return phi, degrees_table
 
