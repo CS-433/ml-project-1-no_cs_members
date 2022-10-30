@@ -51,12 +51,11 @@ This file contains functions used to pre-process data.
 
 A notebook outlining the step-by-step progress of the model (each stage adds something on top of the previous version):
 
-(1) GD (mse) + class  
-(2) normalized dataset 
-(3) added column of ones
-(4) smart normalization
-(5) polynomial expansion
-(6) Ridge regularization
+1. logistic regression 
+2. logistic regression + normalized 
+3. logistic regression + normalized + w0
+4. logistic regression + normalized smart + w0
+5. logistic regression + normalized smart + w0 + polynomial expansion w/ Ridge regression
 
 ## Authors 
 
