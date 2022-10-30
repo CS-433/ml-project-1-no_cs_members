@@ -8,7 +8,7 @@ Preprocessing can include different combinations of the following methods: (1) r
 
 Logistic Regressions are subsequently implemented and legitimized by means of a 7-fold cross validation.
 
-The entire project only uses python the libraries Numpy and Matplolib (for visualisation). 
+The entire project only uses python libraries Numpy and Matplolib (for visualisation). 
 
 ## Code description 
 
