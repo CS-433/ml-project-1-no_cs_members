@@ -47,6 +47,14 @@ This file contains functions used to pre-process data.
 
 --- 
 
+### `classification.py`
+
+This file contains functions used to classify the data, aswell as some for computation of evaluating metrics.
+*  *simple_class, get_accuracy, get_only_accuracy, get_auc, roc_visualization*
+*  *get_Kneigbors, getKpredictions*
+
+--- 
+
 ### `our_progress_run.ipynb`
 
 A notebook outlining the step-by-step progress of the model (each stage adds something on top of the previous version):
@@ -59,6 +67,6 @@ A notebook outlining the step-by-step progress of the model (each stage adds som
 
 ## Authors 
 
-* Mathilde Morini
+* Mathilde Morelli
 * Iris Toye
 * Alexei Ermochkine
