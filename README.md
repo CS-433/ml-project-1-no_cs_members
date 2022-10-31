@@ -72,7 +72,7 @@ A notebook outlining the step-by-step progress of the model (each stage adds som
 5. logistic regression + normalized smart + w0 + high correlation features removed
 
 ---
-###'our_progress_run_loop.py'
+### `our_progress_loop.py`
 This file allowed to run mutiple repetitions of each method described in "our progress", in order to compare their mean and standard deviation.
 
 ---
