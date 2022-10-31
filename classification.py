@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 
 
 def simple_class(x_te, y_te, w_opt):
+    """Classifies all non logistic functions"""
     y_result = x_te@w_opt
     y_result[y_result>0.5] = 1
     y_result[y_result<0.5] = 0
@@ -17,6 +18,7 @@ def simple_class(x_te, y_te, w_opt):
 
 
 def get_only_accuracy(y_result, y_te):
+    """Computes only the accuracy of a model"""
     difference = (y_result-y_te)
     good_guess = difference[difference==0]
     bad_guess = difference[difference!=0]
@@ -25,7 +27,7 @@ def get_only_accuracy(y_result, y_te):
 
 
 def get_accuracy(y_result, y_te, score):
-    """Checks whether prediction are accurate by compraing with y_te
+    """Checks whether prediction are accurate by compraing with y_te, and returning 4 different metrics
     
     Args: 
         y_results: shape=(K,)
