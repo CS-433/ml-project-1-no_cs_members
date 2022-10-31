@@ -8,8 +8,8 @@ from hyperparams import *
 
 # loading train data 
 
-DATA_TRAIN_PATH = "../train.csv"
-yb, input_data, ids = load_csv_data(DATA_TRAIN_PATH)
+
+yb, input_data, ids = load_csv_data("train.csv")
 dimensions = np.shape(input_data)
 N = dimensions[0]
 P = dimensions[1]
@@ -108,8 +108,7 @@ best_lambda, best_rmse = cross_validation_demo(y_tr, x_tr, 7, 4,initial_w,  np.l
 
 #Processing test data
 
-DATA_TEST_PATH = "../test.csv"
-y_test, x_test, ids = load_csv_data(DATA_TEST_PATH)
+y_test, x_test, ids = load_csv_data("test.csv")
 
 dimensions_te = np.shape(x_test)
 N = dimensions_te[0]
