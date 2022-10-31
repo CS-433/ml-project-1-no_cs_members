@@ -70,7 +70,7 @@ A notebook outlining the step-by-step progress of the model (each stage adds som
 3. logistic regression + normalized + w0
 4. logistic regression + normalized smart + w0
 5. logistic regression + normalized smart + w0 + high correlation features removed
-6. 
+
 ---
 ### `seven_methods.py`
 
