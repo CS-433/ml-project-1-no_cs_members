@@ -75,10 +75,12 @@ A notebook outlining the step-by-step progress of the model (each stage adds som
 ### `seven_methods.py`
 
 This file allows to calculate the accuracy for seven methods of regression and classification coded for this project.
+
 ---
 ### `boxplotloop.py`
 
 This file allows to calculate the accuracy for each method on random train sets, in order to build their box plot.
+
 ---
 ### `helpers.py`
 
