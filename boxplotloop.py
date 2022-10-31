@@ -8,7 +8,16 @@ from classification import *
 
 
 def Mloop(tx_rem, y_new):
-
+    """
+    
+    Calculates multiple times the accuracy, on different datasets, in order to obtain the mean accuracy for each method, and its variance.
+    tx_rem : (N,D)
+    y_new : (N,1)
+    
+    Return : 
+    
+    Array with the accuracy of each method
+    """
     rng = np.random.default_rng()
     indices = rng.permutation(tx_rem.shape[0])
     index_split = 10000
