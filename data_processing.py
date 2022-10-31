@@ -2,7 +2,7 @@ import numpy as np
 
 
 def data_replace(tx):
-    """replace missing data in tx in a feature (column) by the mean or median of the feature if more than half the data is missing
+    """replace missing data in tx in a feature (column) by the mean (or median of the feature if more than half the data is missing)
     Args:
         tx: shape=(N,P) N is the number of samples, D is the number of features
     
@@ -63,6 +63,15 @@ def split_data(y,tx,ratio):
     return y_tr, x_tr, y_te, x_te
 
 def add_w0(tx,N):
+    """adds a column of 1s at the end on tx
+    
+    Args:
+        tx: shape=(N,P) N is the number of samples, D is the number of features
+        N: required length of the column of 1s
+    
+    Returns:
+        modified tx
+    """
     tx = np.concatenate((np.ones([N,1]),tx),axis=1)  
     return tx
 
@@ -88,6 +97,15 @@ def data_removed(y,tx):
     return y_new, tx_new
 
 def normalize_log_gaussian(tx_rem, indices_gaussian_log) : 
+    """normalize the features indicated by indices_gaussian_log
+    
+    Args:
+        tx: shape=(N,P) N is the number of samples, D is the number of features
+        indices_gaussian_log: indices of the features deemed to have originated from a log-gaussian distribution
+    
+    Returns:
+        nothing
+    """
     for x in indices_gaussian_log :
         c = tx_rem[:,x]
         c = np.log(tx_rem[:,x])
@@ -97,6 +115,15 @@ def normalize_log_gaussian(tx_rem, indices_gaussian_log) :
     #voir si modifie direct ou si doit faire retour ? devrait être modifié comme fait référence automatiquement non ?
         
 def normalize_angles(tx_rem, indices_angles):
+    """normalize the features indicated by indices_angles
+    
+    Args:
+        tx: shape=(N,P) N is the number of samples, D is the number of features
+        indices_angles: indices of the features deemed to be angles (uniformly distributed)
+    
+    Returns:
+        nothing
+    """
     for x in indices_angles : 
         c = tx_rem[:,x]
         """mean = np.mean(c, axis=0)
@@ -106,6 +133,15 @@ def normalize_angles(tx_rem, indices_angles):
         tx_rem[:,x]  = np.cos(tx_rem[:,x])
         
 def normalize_gaussian(tx_rem, indices_gaussian) :
+    """normalize the features indicated by indices_gaussian
+    
+    Args:
+        tx: shape=(N,P) N is the number of samples, D is the number of features
+        indices_gaussian: indices of the features deemed to have originated from a gaussian distribution
+    
+    Returns:
+        nothing
+    """
     for x in indices_gaussian :
         c = tx_rem[:,x]
         
@@ -114,6 +150,15 @@ def normalize_gaussian(tx_rem, indices_gaussian) :
         tx_rem[:,x] = (c -mean*np.ones(np.shape(c))) / std_dev
 
 def normalize_min_max(tx_rem,indices_minmax):
+    """normalize the features indicated by indices_minmax
+    
+    Args:
+        tx: shape=(N,P) N is the number of samples, D is the number of features
+        indices_min_max: indices of all other features that are normalize by the max/min
+    
+    Returns:
+        nothing
+    """
     for x in indices_minmax :
         c = tx_rem[:,x]
         min = np.min(c, axis=0)
@@ -121,6 +166,18 @@ def normalize_min_max(tx_rem,indices_minmax):
         tx_rem[:,x] = (c-min) / (max-min)
 
 def normalize (tx_rem, indices_gaussian_log, indices_angles, indices_gaussian, indices_min_max) : 
+    """apply all the different kinds of normalization to tx_rem
+    
+    Args:
+        tx: shape=(N,P) N is the number of samples, D is the number of features
+        indices_gaussian_log: indices of the features deemed to have originated from a log-gaussian distribution
+        indices_angles: indices of the features deemed to be angles (uniformly distributed)
+        indices_gaussian: indices of the features deemed to have originated from a gaussian distribution
+        indices_min_max: indices of all other features that are normalize by the max/min
+    
+    Returns:
+        nothing
+    """
     normalize_log_gaussian(tx_rem, indices_gaussian_log) 
     normalize_angles(tx_rem, indices_angles)
     normalize_gaussian(tx_rem, indices_gaussian)
