@@ -99,7 +99,7 @@ This file allows to calculate the accuracy for each method on random train sets,
 Helper functions used to load the data and create the csv submission
 
 ---
-### `predictions`
+### `predictions.csv`
 
 The exact file that was used for the group's best submission (#204331)
 
