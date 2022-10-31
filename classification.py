@@ -18,7 +18,15 @@ def simple_class(x_te, y_te, w_opt):
 
 
 def get_only_accuracy(y_result, y_te):
-    """Computes only the accuracy of a model"""
+"""computes the accuracy of a given model output y_result compared to y_te
+    
+    Args: 
+        y_results: shape=(N,)
+        y_te: shape=(N,). Known predictions of test samples
+    
+    Returns:
+        accuracy: scalar = (TP+TN)/(TP+TN+FP+FN)
+    """ 
     difference = (y_result-y_te)
     good_guess = difference[difference==0]
     bad_guess = difference[difference!=0]
@@ -30,7 +38,7 @@ def get_accuracy(y_result, y_te, score):
     """Checks whether prediction are accurate by compraing with y_te, and returning 4 different metrics
     
     Args: 
-        y_results: shape=(K,)
+        y_results: shape=(N,)
         y_te: shape=(N,). Known predictions of test samples
     
     Returns:
@@ -122,7 +130,16 @@ def get_auc(score, y_result):
 
 
 def roc_visualization(FPR,TPR,auc):
-
+    """A visualisation function to plot the ROC curve
+    
+    Args: 
+        FPR: shape=(len(thresholds),). False Positive Rate
+        TPR: shape=(len(thresholds),). True Positive Rate
+        auc: Area under ROC curve, scalar
+    
+    Returns:
+        nothing
+    """ 
     plt.plot(FPR, TPR, marker='.', color='darkorange', label='ROC curve', clip_on=False)
     plt.plot([0, 1], [0, 1], color='navy', linestyle='--', label = 'No Discrimination')
     plt.xlabel('False Positive Rate')
