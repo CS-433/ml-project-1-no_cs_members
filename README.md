@@ -71,15 +71,20 @@ A notebook outlining the step-by-step progress of the model (each stage adds som
 4. logistic regression + normalized smart + w0
 5. logistic regression + normalized smart + w0 + high correlation features removed
 6. 
-
+---
 ### `seven_methods.py`
 
 This file allows to calculate the accuracy for seven methods of regression and classification coded for this project.
-
+---
 ### `boxplotloop.py`
 
 This file allows to calculate the accuracy for each method on random train sets, in order to build their box plot.
+---
+### `helpers.py`
 
+Helper functions used to load the data and create the csv submission
+
+---
 ## Authors 
 
 * Mathilde Morelli
