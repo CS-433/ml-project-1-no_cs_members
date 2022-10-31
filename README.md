@@ -76,6 +76,14 @@ A notebook outlining the step-by-step progress of the model (each stage adds som
 
 This file allows to calculate the accuracy for seven methods of regression and classification coded for this project.
 
+A: Gradient Descent with MSE
+B: Stochastic Gradient Descent with MSE
+C: Least Squares 
+D: Ridge Regression with cross validation to find best lambda
+E: Logistic Regression with cross validation to find best lambda
+F: Regularized Logistic Regression
+G: K-nearest neighbors classification
+
 ---
 ### `boxplotloop.py`
 
