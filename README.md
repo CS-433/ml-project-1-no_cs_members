@@ -10,7 +10,7 @@ Logistic Regressions are subsequently implemented and legitimized by means of a 
 
 The entire project only uses python libraries Numpy and Matplolib (for visualisation). 
 
-Please add the files train.csv and test.csv directly in the repository.
+### Please add the files train.csv and test.csv directly in the repository.
 
 ## Code description 
 
