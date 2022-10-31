@@ -118,6 +118,15 @@ def loop(yb,x,ratio,P):
 
 
 def get_only_accuracy(y_result, y_te):
+    """computes the accuracy of a given model output y_result compared to y_te
+    
+    Args: 
+        y_results: shape=(N,)
+        y_te: shape=(N,). Known predictions of test samples
+    
+    Returns:
+        accuracy: scalar = (TP+TN)/(TP+TN+FP+FN)
+    """ 
     difference = (y_result-y_te)
     good_guess = difference[difference==0]
     bad_guess = difference[difference!=0]
@@ -125,6 +134,12 @@ def get_only_accuracy(y_result, y_te):
     return accuracy
 
 def standardize(x):
+    """standardize every feature of x with the mean and standard deviation of the respective feature 
+    Args:
+        x: shape=(N,P) N is the number of samples, D is the number of features
+    Returns:
+        modified tx 
+    """
     X = np.copy(x)
     means = np.mean(X, axis=0)
     tx_new = X - means * np.ones(np.shape(X))
