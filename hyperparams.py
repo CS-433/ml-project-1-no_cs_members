@@ -44,18 +44,19 @@ def cross_validation(y, x, k_indices, k,initial_w, lambda_, degree ,gamma, max_i
     """return the loss of ridge regression for a fold corresponding to k_indices
     
     Args:
-        y:          shape=(N,)
-        x:          shape=(N,)
+        y:          shape=(N,1)
+        x:          shape=(N,P)
         k_indices:  2D array returned by build_k_indices()
         k:          scalar, the k-th fold (N.B.: not to confused with k_fold which is the fold nums)
         lambda_:    scalar, cf. ridge_regression()
         degree:     scalar, cf. build_poly()
+        gamma : gamma used for log regression
 
     Returns:
-        train and test root mean square errors rmse = sqrt(2 mse)"""
+        loss from test and train data"""
 
     te_indice = k_indices[k]
-    tr_indice = k_indices[~(np.arange(k_indices.shape[0]) == k)] #comprendre cette ligne ?
+    tr_indice = k_indices[~(np.arange(k_indices.shape[0]) == k)] 
     tr_indice = tr_indice.reshape(-1)
     y_te = y[te_indice]
     y_tr = y[tr_indice]
@@ -74,12 +75,17 @@ def cross_validation_demo(y, x, k_fold,k, initial_w, lambdas, degree ,gamma, max
     """cross validation over regularisation parameter lambda.
     
     Args:
+        y: (N,1)
+        x : (N,D)
+        initial_w : (D,1)
+        gamma : scalar, for the gradient descent
         degree: integer, degree of the polynomial expansion
         k_fold: integer, the number of folds
         lambdas: shape = (p, ) where p is the number of values of lambda to test
+        max_iters : maximal number of iteration for gradient descent
     Returns:
         best_lambda : scalar, value of the best lambda
-        best_rmse : scalar, the associated root mean squared error for the best lambda
+        best_rmse : scalar, the associated  mean squared error for the best lambda
     """
     
     seed = 12
@@ -121,15 +127,12 @@ def cross_validation_demo(y, x, k_fold,k, initial_w, lambdas, degree ,gamma, max
 def build_poly(x, degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree.
     Args:
-        x: numpy array of shape (N,), N is the number of samples.
+        x: numpy array of shape (N,D), N is the number of samples and D the number of features.
         degree: integer.
         
     Returns:
-        poly: numpy array of shape (N,d+1)
+        poly: numpy array of shape (N, D + d+1)
         
-    >>> build_poly(np.array([0.0, 1.5]), 2)
-    array([[1.  , 0.  , 0.  ],
-           [1.  , 1.5 , 2.25]])
     """
     N = x.shape[0]
     poly = np.square(x)
@@ -142,6 +145,19 @@ def build_poly(x, degree):
         return poly
 
 def best_degree_selection(y,x,degrees, k_fold, initial_w, lambdas, gamma,max_iters,seed = 1):
+    """
+    This function calculates the optimal polynomial expansion for each feature
+    y : (N,1)
+    x : (N,D)
+    degrees : degrees to test 
+    initial_w : initial w for gradient descent (D,1)
+    lambdas : lambda to test for reg_logistic regression
+    gamma : gamma for gradient descent
+    max_iters : maximal number of iterations for gradient descent
+    
+    Returns : best degree
+    """
+    
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
     
@@ -173,13 +189,27 @@ def best_degree_selection(y,x,degrees, k_fold, initial_w, lambdas, gamma,max_ite
     return degrees[ind_best_degree]
 
 def phi_optimized(y,x,degrees,P, k_fold, initial_w, lambdas, gamma,max_iters,columns_to_expand,seed = 1) : 
-    #Calcul du meilleur degré pour chaque colonne
+    """
+    y : (N,1)
+    x : (N,D)
+    initial_w : (D,1)
+    lambdas : lambdas to test for the reg logistic regression
+    gamma : gamma for gradient descent
+    max_iters : maximal number of iterations for gradient descent
+    columns_to_expand : array of scalars, each scalar being the number of the feature to expand
+    
+    Return : 
+    phi : x expanded 
+    degrees_table : table with the best degree for each expanded column
+    """
+    
+    #calculates best degree for each column
     degrees_table = []
     gamma = 0.4
     nb_data_used = x.shape[0]
     phi = x
     i = 0
-    for column in columns_to_expand : #ne prend pas en compte la première colonne de x, qui est la colonne de 1 VERIFIER QU'ON VA BIEN JUSQU4A LA DERNIERE
+    for column in columns_to_expand : 
         
         degrees_table.append(best_degree_selection(y,x[:,column],degrees, k_fold, initial_w, lambdas, gamma,max_iters,seed = 1))
         if (degrees_table[i] >1) : 
@@ -195,6 +225,22 @@ def phi_optimized(y,x,degrees,P, k_fold, initial_w, lambdas, gamma,max_iters,col
 # cross validation for ridge regression
 
 def cross_validation_ridge_reg(y, x, k_indices,k, initial_w,lambda_, degree ,gamma, max_iters):
+    
+    """cross validation with ridge regression
+    
+    Args:
+        y: (N,1)
+        x : (N,D)
+        initial_w : (D,1)
+        gamma : scalar, for the gradient descent
+        degree: integer, degree of the polynomial expansion
+     
+        lambda_ : scalar, lambda used for ridge regression
+        max_iters : maximal number of iteration for gradient descent
+    Returns:
+        loss for train and test data
+    """
+    
     te_indice = k_indices[k]
     tr_indice = k_indices[~(np.arange(k_indices.shape[0]) == k)] 
     tr_indice = tr_indice.reshape(-1)
@@ -213,7 +259,20 @@ def cross_validation_ridge_reg(y, x, k_indices,k, initial_w,lambda_, degree ,gam
 
 
 def cross_validation_demo_ridge_reg(y, x, k_fold, k, initial_w, lambdas, degree ,gamma, max_iters):
-
+      """cross validation with ridge regression
+    
+    Args:
+        y: (N,1)
+        x : (N,D)
+        initial_w : (D,1)
+        lambda_ : array of scalar, lambdas tested for ridge regression, in order to find the best lambda
+        degree: integer, degree of the polynomial expansion
+        gamma : scalar, for the gradient descent
+        max_iters : maximal number of iteration for gradient descent
+    Returns:
+        best lambda and best loss
+    """
+    
     seed = 12
     degree = degree
     k_fold = k_fold
